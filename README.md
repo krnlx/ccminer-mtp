@@ -22,11 +22,7 @@ Based on Christian Buchner's &amp; Christian H.'s CUDA project and tpruvot@githu
 Building on windows
 -------------------
 
-Required: msvc2015 and cuda 9.x (cuda 9.2 prefered)
-Dependencies for windows are included in compat directory, using a different version of msvc will most likely require to recompile those libraries.
-
-In order to build ccminer, choose "Release" and "x64" (this version won't work with win32)
-Then click "generate"
+- not tested
 
 Building on Linux (tested on Ubuntu 16.04)
 ------------------------------------------
@@ -37,7 +33,7 @@ A developpement environnement is required together with curl, jansson and openss
 	* sudo apt-get update && sudo apt-get -y dist-upgrade
 	* sudo apt-get -y install gcc g++ build-essential automake linux-headers-$(uname -r) git gawk libcurl4-openssl-dev libjansson-dev xorg libc++-dev libgmp-dev python-dev
 
-	* Installing CUDA 9.2 and compatible drivers from nvidia website and not from ubuntu package is usually easier
+	* Installing CUDA 10 and compatible drivers from nvidia website and not from ubuntu package is usually easier
 	
 	* Compiling ccminner:
 
@@ -67,8 +63,8 @@ Running ccminer with mtp and requirement
 ----------------------------------------
 
 mtp requires 4Gb of vram, hence cards with less than 4.5Gb of vram won't work.
-while running, ccminer will also use around 5.5Gb of ram. 
-For the moment, ccminer, support only one vga per instance, to run of several gpus, it is then required to run one ccminer instance by gpu.
+while running, ccminer will also use around 256MB of ram per adapter. 
+
 
 Instruction to mine on zcoin wallet (example)
 
@@ -83,8 +79,6 @@ ccminer -a mtp -o  http://127.0.0.1:8382  -u djm34 -p password --coinbase-addr a
 
 zcoin wallet should also be run with "server=1" option and "rpcport,rpcuser,rpcpassword" should match those of zcoin.conf
 
-
-NB: For the moment, the intensity is not adjustable, this project is still in developpement, this will be changed in the near future
 
 
 
