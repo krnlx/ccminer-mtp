@@ -5,10 +5,12 @@ krnlx 2018
 
 donation addresses:
 djm34:
+	
 	BTC: 1NENYmxwZGHsKFmyjTc5WferTn5VTFb7Ze
 
 	XZC: aChWVb8CpgajadpLmiwDZvZaKizQgHxfh5
 krnlx:
+	
 	BTC: 1FJGCKYw1pDamUxQS1dNTTVNVpWsCjPLUd
 	
 	XZC: aFZGwPK5dAb8i4feQ5WjRjvWhFiMQn8JwZ
