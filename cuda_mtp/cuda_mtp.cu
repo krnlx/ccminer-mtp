@@ -1192,10 +1192,19 @@ __syncwarp();
 //__syncthreads();
 //if(!threadIdx.x){
 //	for (i = 0; i < 8; i++) {
-if(tid<8)
+if(tid<32)
          {
+/*
         int i=tid;
 	int y=tid << 1;
+*/
+
+        int i=tid;
+        int y=(tid >> 2) << 1;
+        int x= tid & 3;
+	int a = ((x) >> 1)*16;
+	int b = x & 1;
+
 /*
         uint64_t t[16];
         for(int i=0;i<8;i++)
@@ -1205,6 +1214,21 @@ if(tid<8)
                 t[i*2+1]= blockR.v[y+i*16+1];
 */
 
+        int a1 = (((x+1) & 3) >> 1)*16;
+        int b1 = (x+1) & 1;
+
+        int a2 = (((x+2) & 3) >> 1)*16;
+        int b2 = (x+2) & 1;
+
+        int a3 = (((x+3) & 3) >> 1)*16;
+        int b3 = (x+3) & 1;
+
+        G(blockR.v[y+b+a], blockR.v[y+32+b+a], blockR.v[y+64+b+a], blockR.v[y+96 +b+a]); 
+        G(blockR.v[y+b+a], blockR.v[y+32+b1+a1], blockR.v[y+64+b2+a2], blockR.v[y+96+a3+b3]); 
+//printf("%d %d %d %d\n",b+a,32+b1+a1, 64+b2+a2, 96+b3+a3);
+//return;
+
+/*
 		BLAKE2_ROUND_NOMSG(
 			blockR.v[y], blockR.v[y + 1], blockR.v[y + 16],
 			blockR.v[y + 17], blockR.v[y + 32], blockR.v[y + 33],
@@ -1212,6 +1236,7 @@ if(tid<8)
 			blockR.v[y + 65], blockR.v[y + 80], blockR.v[y + 81],
 			blockR.v[y + 96], blockR.v[y + 97], blockR.v[y + 112],
 			blockR.v[y + 113]);
+*/
 /*
                 BLAKE2_ROUND_NOMSG(
                         t[0], t[1], t[2], t[3],
