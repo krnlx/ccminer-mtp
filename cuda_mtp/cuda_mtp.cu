@@ -1050,10 +1050,17 @@ __device__ __forceinline__ void xor_block(mem_blk *dst, const mem_blk *src) {
 
 __device__ __forceinline__ void copy_block(mem_blk *dst, const mem_blk *src) {
         dst->v[threadIdx.x]=src->v[threadIdx.x];
+        dst->v[threadIdx.x+32]=src->v[threadIdx.x+32];
+        dst->v[threadIdx.x+64]=src->v[threadIdx.x+64];
+        dst->v[threadIdx.x+96]=src->v[threadIdx.x+96];
+
 }
 
 __device__ __forceinline__ void xor_block(mem_blk *dst, const mem_blk *src) {
         dst->v[threadIdx.x] ^= src->v[threadIdx.x];
+        dst->v[threadIdx.x+32]^=src->v[threadIdx.x+32];
+        dst->v[threadIdx.x+64]^=src->v[threadIdx.x+64];
+        dst->v[threadIdx.x+96]^=src->v[threadIdx.x+96];
 }
 __device__ __forceinline__ uint64_t fBlaMka(uint64_t x, uint64_t y) {
     const uint64_t m = UINT64_C(0xFFFFFFFF);
@@ -1089,6 +1096,9 @@ __device__ __forceinline__ uint64_t fBlaMka(uint64_t x, uint64_t y) {
 
 __device__ __forceinline__ void xor_copy_block(mem_blk *dst, const mem_blk *src, const mem_blk *src1) {
         dst->v[threadIdx.x] = src->v[threadIdx.x] ^ src1->v[threadIdx.x];
+        dst->v[threadIdx.x+32]=src->v[threadIdx.x+32] ^ src1->v[threadIdx.x+32];
+        dst->v[threadIdx.x+64]=src->v[threadIdx.x+64] ^ src1->v[threadIdx.x+64];
+        dst->v[threadIdx.x+96]=src->v[threadIdx.x+96] ^ src1->v[threadIdx.x+96];
 }
 
 __device__ __forceinline__ void dup_xor_copy_block(mem_blk *dst, mem_blk *dst1, const mem_blk *src, const mem_blk *src1) {
@@ -1119,7 +1129,7 @@ __device__ __forceinline__ void fill_block_withIndex(const mem_blk *prev_block, 
 	}
 	//	blockR.v[16] = ((uint64_t*)block_header)[0];
 	//	blockR.v[17] = ((uint64_t*)block_header)[1];
-if(tid == 14){
+if(!tid){
 //	memcpy(&blockR.v[14], TheIndex,  sizeof(uint64_t)); //index here
 	blockR.v[14]=MAKE_ULONGLONG(TheIndex[0],TheIndex[1]);
 //	memcpy(&blockR.v[16], (uint64_t*)block_header, 2 * sizeof(uint64_t));
@@ -1136,8 +1146,8 @@ if(!tid)
 for(int i=0;i<8;i++)
         bl[i]=block_header[i];
 
-__syncthreads();
-if(tid<32)
+//__syncthreads();
+//if(tid<32)
 	 {
 
 	int i=tid;
@@ -1188,11 +1198,11 @@ if(tid<32)
 */
 	}
 
-__syncwarp();
+//__syncwarp();
 //__syncthreads();
 //if(!threadIdx.x){
 //	for (i = 0; i < 8; i++) {
-if(tid<32)
+//if(tid<32)
          {
 /*
         int i=tid;
@@ -1253,7 +1263,7 @@ if(tid<32)
 */
 	}
 //}
-	__syncthreads();
+//	__syncthreads();
 //	xor_block(&block_tmp, &blockR);
 //	copy_block(next_block, &block_tmp);
 xor_copy_block(next_block, &block_tmp, &blockR);
@@ -1402,7 +1412,7 @@ __host__ void mtp_i_cpu(int thr_id, uint32_t *block_header){
                 cudaDeviceReset();
                 exit(1);
         }
-	uint32_t tpb = 128; 
+	uint32_t tpb = 32; 
         dim3 grid(4);
         dim3 block(tpb);
 //        for(int i=0;i<4;i++)
