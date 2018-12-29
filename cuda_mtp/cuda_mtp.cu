@@ -1146,6 +1146,8 @@ if(!tid)
 for(int i=0;i<8;i++)
         bl[i]=block_header[i];
 
+
+__syncwarp();
 //__syncthreads();
 //if(tid<32)
 	 {
@@ -1197,7 +1199,7 @@ for(int i=0;i<8;i++)
                 blockR.v[y+i] = t[i];
 */
 	}
-
+__syncwarp();
 //__syncwarp();
 //__syncthreads();
 //if(!threadIdx.x){
@@ -1262,6 +1264,7 @@ for(int i=0;i<8;i++)
                 blockR.v[y+i*16+1] = t[i*2+1];
 */
 	}
+__syncwarp();
 //}
 //	__syncthreads();
 //	xor_block(&block_tmp, &blockR);
