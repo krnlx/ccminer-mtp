@@ -1137,17 +1137,24 @@ for(int i=0;i<8;i++)
         bl[i]=block_header[i];
 
 __syncthreads();
-if(tid<8)
+if(tid<32)
 	 {
 
 	int i=tid;
-	int y=tid << 4;
+	int y=(tid >> 2) << 4;
+	int x= tid & 3;
 /*
 	uint64_t t[16];
 	for(int i=0;i<16;i++)
 		t[i]= blockR.v[y+i];
 */
 
+        G(blockR.v[y+x], blockR.v[y+4+x], blockR.v[y+8+x], blockR.v[y+12 +x]); 
+        G(blockR.v[y+x], blockR.v[y+4+((1 + x)&3) ], blockR.v[y+8+((2 + x)&3)], blockR.v[y+12 +((3 + x)&3)]); 
+//printf("%d %d %d %d\n",x,4+((1 + x)&3), 8+((2 + x)&3), 12 +((3 + x)&3));
+//return;
+
+/*
 		BLAKE2_ROUND_NOMSG(
 			blockR.v[y], blockR.v[y + 1], blockR.v[y + 2],
 			blockR.v[y + 3], blockR.v[y + 4], blockR.v[y + 5],
@@ -1155,6 +1162,7 @@ if(tid<8)
 			blockR.v[y + 9], blockR.v[y + 10], blockR.v[y + 11],
 			blockR.v[y + 12], blockR.v[y + 13], blockR.v[y + 14],
 			blockR.v[y + 15]);
+*/
 /*
 
                 BLAKE2_ROUND_NOMSG(
