@@ -51,7 +51,7 @@ void copy_blockS(blockS *dst, const block *src);
 
 void mtp_hash(char* output, const char* input, unsigned int d, uint32_t TheNonce);
 argon2_context init_argon2d_param(const char* input);
-void getblockindex(uint32_t ij, argon2_instance_t *instance, uint32_t *out_ij_prev, uint32_t *out_computed_ref_block);
+void getblockindex(int thr_id, uint32_t ij, argon2_instance_t *instance, uint32_t *out_ij_prev, uint32_t *out_computed_ref_block);
 
 //int mtp_solver_withblock(uint32_t TheNonce, argon2_instance_t *instance, unsigned int d, block_mtpProof *output,
 // uint8_t *resultMerkleRoot, MerkleTree TheTree,uint32_t* input, uint256 hashTarget);
